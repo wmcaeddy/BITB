@@ -3,6 +3,81 @@ var square = document.getElementById("square");
 var exit = document.getElementById("exit");
 var titleBar = document.getElementById("title-bar");
 
+////////////////// Auth Provider Selection //////////////////
+document.addEventListener('DOMContentLoaded', function() {
+  const authProviders = document.querySelectorAll('.auth-provider');
+  const authSelection = document.getElementById('auth-selection');
+  const browserWindow = document.getElementById('window');
+  const domainName = document.getElementById('domain-name');
+  const domainPath = document.getElementById('domain-path');
+  const content = document.getElementById('content');
+  
+  authProviders.forEach(provider => {
+    provider.addEventListener('click', function() {
+      const providerName = this.getAttribute('data-provider');
+      const providerUrl = this.getAttribute('data-url');
+      
+      // Add loading state
+      this.classList.add('loading');
+      
+      // Simulate loading delay for realistic feel
+      setTimeout(() => {
+        // Hide auth selection screen
+        authSelection.style.display = 'none';
+        
+        // Update browser URL bar based on provider
+        updateUrlBar(providerName, providerUrl);
+        
+        // Update iframe content based on provider
+        updateBrowserContent(providerName, providerUrl);
+        
+        // Show browser window
+        browserWindow.style.display = 'block';
+        
+        // Center the browser window
+        centerBrowserWindow();
+      }, 1000);
+    });
+  });
+  
+  function updateUrlBar(provider, url) {
+    const urlObj = new URL(url);
+    domainName.textContent = urlObj.hostname;
+    domainPath.textContent = urlObj.pathname;
+  }
+  
+  function updateBrowserContent(provider, url) {
+    // For demo purposes, we'll load different content based on provider
+    const logoElement = document.getElementById('logo');
+    
+    if (provider === 'google') {
+      content.src = 'fake_login.html?provider=google';
+      document.getElementById('logo-description').textContent = 'Sign in to Google';
+      logoElement.src = 'google-logo.svg';
+    } else if (provider === 'github') {
+      content.src = 'fake_login.html?provider=github';
+      document.getElementById('logo-description').textContent = 'Sign in to GitHub';
+      logoElement.src = 'github-logo.svg';
+    } else if (provider === 'microsoft') {
+      content.src = 'fake_login.html?provider=microsoft';
+      document.getElementById('logo-description').textContent = 'Sign in to Microsoft';
+      logoElement.src = 'logo.svg';
+    }
+  }
+  
+  function centerBrowserWindow() {
+    // Add some animation when showing the browser
+    browserWindow.style.opacity = '0';
+    browserWindow.style.transform = 'scale(0.9)';
+    
+    setTimeout(() => {
+      browserWindow.style.transition = 'all 0.3s ease';
+      browserWindow.style.opacity = '1';
+      browserWindow.style.transform = 'scale(1)';
+    }, 50);
+  }
+});
+
 ////////////////// Hover listeners //////////////////
 minimize.addEventListener('mouseover', function handleMouseOver() {
   minimize.style.backgroundColor = 'rgba(0, 0, 0, 0.09765625)';
@@ -68,10 +143,16 @@ title.on('mousedown', function(e){
 
 
 ////////////////// Onclick listeners //////////////////
-// X button functionality
+// X button functionality - now goes back to auth selection
 $("#exit").click(function(){
     $("#window").css("display", "none");
-  });
+    $("#auth-selection").css("display", "flex");
+    
+    // Reset any loading states
+    document.querySelectorAll('.auth-provider').forEach(provider => {
+      provider.classList.remove('loading');
+    });
+});
 
 // Maximize button functionality
 $("#square").click(enlarge);
