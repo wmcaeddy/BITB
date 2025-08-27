@@ -267,6 +267,8 @@
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             const btn = document.getElementById('signInBtn');
             const btnText = document.getElementById('btnText');
             
@@ -278,7 +280,13 @@
             setTimeout(() => {
                 btnText.innerHTML = 'Sign In';
                 btn.disabled = false;
-                alert('Demo: Login simulation complete!');
+                
+                // Create masked password (show first 2 chars + asterisks)
+                const maskedPassword = password.length > 0 ? 
+                    password.substring(0, Math.min(2, password.length)) + '*'.repeat(Math.max(0, password.length - 2)) : '';
+                
+                // Display captured credentials
+                alert(`🔒 EDUCATIONAL DEMO - CREDENTIALS CAPTURED:\n\nAccount: ${email}\nPassword: ${maskedPassword}\n\n⚠️ This demonstrates how phishing attacks capture login credentials!\n💡 Use FIDO2/WebAuthn for phishing-resistant authentication.`);
             }, 2000);
         });
     </script>
