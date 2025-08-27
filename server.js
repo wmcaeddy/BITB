@@ -23,6 +23,11 @@ app.use((req, res, next) => {
 // Serve static files from the current directory
 app.use(express.static(__dirname));
 
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK', message: 'Educational BITB Demo Server is running' });
+});
+
 // Default route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
